@@ -2,6 +2,7 @@
 #include "tools.h"
 #include "Eigen/Dense"
 #include <iostream>
+#include <math.h>  // for trigonometric function
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -37,6 +38,10 @@ FusionEKF::FusionEKF() {
     * Set the process and measurement noises
   */
 
+  H_laser_ << 1,0,0,0,
+          0,1,0,0;
+
+
 
 }
 
@@ -67,11 +72,20 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Convert radar from polar to cartesian coordinates and initialize state.
       */
+      float ro = measurement_pack.raw_measurements_[0];
+      float theta = measurement_pack.raw_measurements_[1];
+      float ro_dot = measurement_pack.raw_measurements_[2];
+
+      ekf_.x_ << ro*cos(theta),ro*sin(theta),0,0;
+      previous_timestamp_ = measurement_pack.timestamp_;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
       Initialize state.
       */
+      ekf_.x_ << measurement_pack.raw_measurements_[0],measurement_pack.raw_measurements_[1],0,0;
+      previous_timestamp_ = measurement_pack.timestamp_;
+
     }
 
     // done initializing, no need to predict or update
