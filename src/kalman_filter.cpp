@@ -1,7 +1,9 @@
 #include "kalman_filter.h"
+#include <iostream> // for cout
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
+using namespace std;
 
 KalmanFilter::KalmanFilter() {}
 
@@ -34,6 +36,8 @@ void KalmanFilter::Update(const VectorXd &z) {
   TODO:
     * update the state by using Kalman Filter equations
   */
+    cout << "H_:" << H_ << endl;
+    cout << "x_" << x_ << endl;
     VectorXd z_pred = H_ * x_;
     VectorXd y = z - z_pred;
     MatrixXd Ht = H_.transpose();
@@ -41,7 +45,7 @@ void KalmanFilter::Update(const VectorXd &z) {
     MatrixXd Si = S.inverse();
     MatrixXd PHt = P_ * Ht;
     MatrixXd K = PHt * Si;
-
+    cout << "check point" << endl;
     //new estimate
     x_ = x_ + (K * y);
     long x_size = x_.size();
