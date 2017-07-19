@@ -40,9 +40,12 @@ void KalmanFilter::Update(const VectorXd &z) {
     cout << "x_" << x_ << endl;
     VectorXd z_pred = H_ * x_;
     VectorXd y = z - z_pred;
+    cout << "check point 1" << endl;
     MatrixXd Ht = H_.transpose();
+    cout << "R_:" << R_ << endl;
     MatrixXd S = H_ * P_ * Ht + R_;
     MatrixXd Si = S.inverse();
+    cout << "check point 2" << endl;
     MatrixXd PHt = P_ * Ht;
     MatrixXd K = PHt * Si;
     cout << "check point" << endl;

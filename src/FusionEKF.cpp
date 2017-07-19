@@ -184,6 +184,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     float y_measurement = measurement_pack.raw_measurements_[1];
     z << x_measurement,y_measurement;
       ekf_.H_ = H_laser_;
+      ekf_.R_ = R_laser_;
       ekf_.Update(z);
   }
 
