@@ -33,7 +33,7 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
         exit;
     }
             // ... your code here
-    cout << " size of estimations vector:" << estimations.size() << endl;
+    //cout << " size of estimations vector:" << estimations.size() << endl;
     //accumulate squared residuals
     for(int i=0; i < estimations.size(); ++i){
     // ... your code here
@@ -77,7 +77,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
     //compute the Jacobian matrix
     Hj << px/sqrt(px*px+py*py),py/sqrt(px*px+py*py),0,0,
           -py/(px*px+py*py),px/(px*px+py*py),0,0,
-          py*(vx*py-vy*px)/pow((px*px+py*py),3/2),px*(vy*px-vx*py)/pow((px*px+py*py),3/2),px/sqrt(px*px+py*py),py/sqrt(px*px+py*py);
+          py*(vx*py-vy*px)/pow((px*px+py*py),1.5),px*(vy*px-vx*py)/pow((px*px+py*py),1.5),px/sqrt(px*px+py*py),py/sqrt(px*px+py*py);
 
     return Hj;
 }

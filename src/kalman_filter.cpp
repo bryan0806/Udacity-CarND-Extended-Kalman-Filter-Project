@@ -66,7 +66,13 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     float vy = x_(3);
     float ro = sqrt(px*px+py*py);
     float theta = atan2(py,px);
-    float ro_dot = (px*vx+py*vy)/ro;
+    float ro_dot = ((px*vx)+(py*vy))/ro;
+
+    if(fabs(ro)<0.0001){
+        cout << "in!!!!"<<endl;
+        ro = 0.0001;
+    }
+
     while(theta < -M_PI){
         theta += 2*M_PI;
     }
@@ -77,15 +83,17 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     //cout << "theta measure:" << z(1) << endl;
     VectorXd z_pred = VectorXd(3);
     z_pred << ro,theta,ro_dot;
+    //cout << "z:" << z(1) <<endl;
     VectorXd y = z - z_pred;
     //cout << "check point 1" << endl;
+
     while(y(1) < -M_PI){
         y(1) += 2*M_PI;
     }
     while(y(1) > M_PI){
         y(1) -= 2*M_PI;
     }
-
+    cout << "y2:" << y(2) << endl;
     MatrixXd Ht = H_.transpose();
     MatrixXd S = H_ * P_ * Ht + R_;
     //cout << "check point 2 " << endl;

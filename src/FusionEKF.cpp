@@ -149,8 +149,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   //2. Set the process covariance matrix Q
 
   //acceleration noise components
-  float noise_ax = 9;
-  float noise_ay = 9;
+  float noise_ax = 9.0;
+  float noise_ay = 9.0;
 
   ekf_.Q_ = MatrixXd(4, 4);
   ekf_.Q_ <<  pow(dt,4)/4*noise_ax,0,pow(dt,3)/2*noise_ax,0,
@@ -198,6 +198,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   }
 
   // print the output
-  cout << "x_ = " << ekf_.x_ << endl;
-  cout << "P_ = " << ekf_.P_ << endl;
+  //cout << "x_ = " << ekf_.x_ << endl;
+  //cout << "P_ = " << ekf_.P_ << endl;
 }
