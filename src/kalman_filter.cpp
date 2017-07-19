@@ -1,5 +1,6 @@
 #include "kalman_filter.h"
 #include <iostream> // for cout
+#include <math.h>  // for trigonometric function
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -56,5 +57,31 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   TODO:
     * update the state by using Extended Kalman Filter equations
   */
+    cout << "inside UpdateEKF" << endl;
+    cout << "H_:" << H_ << endl;
+    cout << "x_:" << x_ << endl;
+    float px = x_(0);
+    float py = x_(1);
+    float vx = x_(2);
+    float vy = x_(3);
+    float ro = sqrt(px*px+py*py);
+    float theta = atan2(py,px);
+    float ro_dot = (px*vx+py*vy)/ro;
+    cout << "theta:" << theta << endl;
+    VectorXd z_pred = VectorXd(3);
+    z_pred << ro,theta,ro_dot;
+    VectorXd y = z - z_pred;
+    cout << "check point 1" << endl;
+    MatrixXd Ht = H_.transpose();
+    MatrixXd S = H_ * P_ * Ht + R_;
+    cout << "check point 2 " << endl;
+    MatrixXd Si = S.inverse();
+    MatrixXd PHt = P_ * Ht;
+    MatrixXd K = PHt * Si;
+    //new estimate
+    x_ = x_ + (K * y);
+    long x_size = x_.size();
+    MatrixXd I = MatrixXd::Identity(x_size, x_size);
+    P_ = (I - K * H_) * P_;
 
 }

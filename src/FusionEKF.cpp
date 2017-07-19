@@ -177,10 +177,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // Radar updates
       Hj_ = tools.CalculateJacobian(ekf_.x_);
-      VectorXd z = VectorXd(2);
-      float x_measurement = measurement_pack.raw_measurements_[0];
-      float y_measurement = measurement_pack.raw_measurements_[1];
-      z << x_measurement,y_measurement;
+      VectorXd z = VectorXd(3);
+      float ro_measurement = measurement_pack.raw_measurements_[0];
+      float theta_measurement = measurement_pack.raw_measurements_[1];
+      float ro_dot_measurement = measurement_pack.raw_measurements_[2];
+      z << ro_measurement,theta_measurement,ro_dot_measurement;
       ekf_.H_ = Hj_;
       ekf_.R_ = R_radar_;
       ekf_.UpdateEKF(z);
