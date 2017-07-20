@@ -1,5 +1,4 @@
 #include "kalman_filter.h"
-#include <iostream> // for cout
 #include <math.h>  // for trigonometric function
 
 using Eigen::MatrixXd;
@@ -57,9 +56,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   TODO:
     * update the state by using Extended Kalman Filter equations
   */
-    //cout << "inside UpdateEKF" << endl;
-    //cout << "H_:" << H_ << endl;
-    //cout << "x_:" << x_ << endl;
+
     float px = x_(0);
     float py = x_(1);
     float vx = x_(2);
@@ -69,7 +66,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     float ro_dot = ((px*vx)+(py*vy))/ro;
 
     if(fabs(ro)<0.0001){
-        cout << "in!!!!"<<endl;
         ro = 0.0001;
     }
 
@@ -79,13 +75,12 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     while(theta > M_PI){
         theta -= 2*M_PI;
     }
-    //cout << "theta:" << theta << endl;
-    //cout << "theta measure:" << z(1) << endl;
+
     VectorXd z_pred = VectorXd(3);
     z_pred << ro,theta,ro_dot;
-    //cout << "z:" << z(1) <<endl;
+
     VectorXd y = z - z_pred;
-    //cout << "check point 1" << endl;
+
 
     while(y(1) < -M_PI){
         y(1) += 2*M_PI;
@@ -93,10 +88,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     while(y(1) > M_PI){
         y(1) -= 2*M_PI;
     }
-    cout << "y2:" << y(2) << endl;
+
     MatrixXd Ht = H_.transpose();
     MatrixXd S = H_ * P_ * Ht + R_;
-    //cout << "check point 2 " << endl;
+
     MatrixXd Si = S.inverse();
     MatrixXd PHt = P_ * Ht;
     MatrixXd K = PHt * Si;

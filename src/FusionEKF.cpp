@@ -98,15 +98,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
               0, 0, 0, 1000;
 
 
-    //measurement covariance
-    //ekf_.R_ = MatrixXd(2, 2);
-    //ekf_.R_ << 0.0225, 0,
-    //          0, 0.0225;
 
-    //measurement matrix
-    //kf_.H_ = MatrixXd(2, 4);
-    //kf_.H_ << 1, 0, 0, 0,
-    //                  0, 1, 0, 0;
 
     //the initial transition matrix F_
     ekf_.F_ = MatrixXd(4, 4);
@@ -115,9 +107,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                0, 0, 1, 0,
                0, 0, 0, 1;
 
-    //set the acceleration noise components
-    //noise_ax = 5;
-    //noise_ay = 5;
+
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
@@ -142,7 +132,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   // TODO: YOUR CODE HERE
   //1. Modify the F matrix so that the time is integrated
-  //cout << "F is "<< endl << kf_.F_ << endl;
+
   ekf_.F_(0,2) = dt;
   ekf_.F_(1,3) = dt;
 
@@ -157,11 +147,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
              0,pow(dt,4)/4*noise_ay,0,pow(dt,3)/2*noise_ay,
              pow(dt,3)/2*noise_ax,0,pow(dt,2)*noise_ax,0,
              0,pow(dt,3)/2*noise_ay,0,pow(dt,2)*noise_ay;
-  //cout << "Q is now " << kf_.Q_ << endl;
+
   //3. Call the Kalman Filter predict() function
-  //cout << "before predict" << endl;
+
   ekf_.Predict();
-  //cout << "after predict" << endl;
+
   /*****************************************************************************
    *  Update
    ****************************************************************************/
@@ -198,6 +188,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   }
 
   // print the output
-  //cout << "x_ = " << ekf_.x_ << endl;
-  //cout << "P_ = " << ekf_.P_ << endl;
+  cout << "x_ = " << ekf_.x_ << endl;
+  cout << "P_ = " << ekf_.P_ << endl;
 }
